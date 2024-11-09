@@ -35,9 +35,9 @@ You must identify potential red flags and green flags in the job posting. As wel
 
 You should wrap the highlighted sections in <span> tags with the following attributes:
 - data-highlight boolean value to all
-- data-type any of "positive", "negative" or "context"
+- data-type any of "positive", "negative", "context" or "info"
 - data-description a short description of why the text was highlighted
-- class "highlight-positive", "highlight-negative" or "highlight-context"
+- class "highlight-positive", "highlight-negative", "highlight-context" or "highlight-info"
 
 For example:
 <example-input>
@@ -79,7 +79,10 @@ You should highlight the following:
 
 Be creative with the data-descriptions.
 
-Keep the rest of the HTML exactly as is, and make sure to keep the HTML structure intact. Only wrap parts of the text in <span> tags.`;
+Keep the rest of the HTML exactly as is, and make sure to keep the HTML structure intact. Only wrap parts of the text in <span> tags.
+
+Make sure to always add at least one to three highlights! If you can't find any red flags, or green flags, add context or info highlights.
+`;
 
 app.post("/", async (c) => {
   const apiKey = c.env.OPENAI_API_KEY;
