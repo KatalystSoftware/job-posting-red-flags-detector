@@ -10,14 +10,60 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 const HTMLResp = z.object({
-  html: z.string(),
+  html: z.string().describe("Output HTML"),
 });
 
 const systemMessage = `
-You are given a HTML of a job posting. You need to find redflags and greenflags by wrapping them
- in <span class="highlight-negative" data-description="sign of non competent work space"></span> and <span class="highlight-positive" data-description="environmentally conscious"></span>.
+You are tasked with identifying things to look out for in a job posting.
+
+You must identify potential red flags and green flags in the job posting. As well as things that may require additional context.
+
+You should wrap the highlighted sections in <span> tags with the following attributes:
+- data-type any of "positive", "negative" or "context"
+- data-description a short description of why the text was highlighted
+- class "highlight-positive", "highlight-negative" or "highlight-context"
+
+For example:
+<example-input>
+<div>
+  <p>You will wear many hats</p>
+  <p>Our team is like a family</p>
+  <p>You have agency to make decisions</p>
+
+  <p>
+    <span>Perks:</span>
+    <ul>
+      <li>Free snacks</li>
+      <li>Flexible hours</li>
+      <li>Unlimited vacation</li>
+      <li>Competitive salary</li>
+    </ul>
+  </p>
+</div>
+</example-input>
+
+You should highlight the following:
+<example-output>
+<div>
+  <p><span data-type="negative" data-description="Wearing many hats is a common description when the role is not well defined, and you may be expected to do a lot outside the job description." class="highlight-negative">You will wear many hats</span></p>
+  <p><span data-type="negative" data-description="Treating the team as a family is often used to take advantage of employees' time and ignore work/life boundaries." class="highlight-negative">Our team is like a family</span></p>
+  <p><span data-type="positive" data-description="Having agency means that you are treated with respect and trusted in the workplace." class="highlight-positive">You have agency to make decisions</span></p>
+
+  <p>
+    <span>Perks:</span>
+    <ul>
+      <li>Free snacks</li>
+      <li>Flexible hours</li>
+      <li><span data-type="context" data-description="Unlimited vacation requires context. You might still be socially restricted from taking vacation in the workplace, and may end up with less vacation time." class="highlight-context">Unlimited vacation</span></li>
+      <li><span data-type="negative" data-description="Openly sharing pay ranges in job posts fosters transparency and builds trust that your organization pays people fairly. Keeping the salary range hidden is prone to wasting time of both applicants and recruiters time." class="highlight-negative">Competitive salary</span></li>
+    </ul>
+  </p>
+</div>
+</example-output>
+
 Be creative with the data-descriptions.
-`;
+
+Keep the rest of the HTML exactly as is, and make sure to keep the HTML structure intact. Only wrap parts of the text in <span> tags.`;
 
 app.post("/", async (c) => {
   const apiKey = c.env.OPENAI_API_KEY;
