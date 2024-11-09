@@ -108,7 +108,7 @@ app.post("/", async (c) => {
   }
 
   const completion = await openai.beta.chat.completions.parse({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: [
       { role: "system", content: systemMessage },
       {
