@@ -77,7 +77,7 @@ You should highlight the following:
 </div>
 </example-output>
 
-Be creative with the data-descriptions.
+Be creative with the data-descriptions, but make sure they are clear and concise. Keep the descriptions in the same language as the original input text.
 
 Keep the rest of the HTML exactly as is, and make sure to keep the HTML structure intact. Only wrap parts of the text in <span> tags.
 
