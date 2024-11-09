@@ -1,0 +1,2 @@
+# get key and copy file to .dev.vars
+OPENAI_API_KEY=""
