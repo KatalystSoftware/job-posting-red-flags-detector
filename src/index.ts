@@ -8,6 +8,7 @@ import { z } from "zod";
 
 type Bindings = {
   OPENAI_API_KEY: string;
+  CACHE_KV: KVNamespace;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -93,6 +94,18 @@ app.post("/", async (c) => {
   }
 
   const input = body.html;
+  const inputHashKey = Array.from(
+    new Uint8Array(
+      await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body.html))
+    )
+  )
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  const alreadyGenerated = await c.env.CACHE_KV.get(inputHashKey);
+  if (alreadyGenerated !== null) {
+    return c.text(alreadyGenerated);
+  }
 
   const completion = await openai.beta.chat.completions.parse({
     model: "gpt-4o",
@@ -106,8 +119,13 @@ app.post("/", async (c) => {
     response_format: zodResponseFormat(HTMLResp, "htmlResp"),
   });
 
-  const resp = completion.choices[0].message.parsed;
-  return c.text(resp?.html ?? "no content in response");
+  const newHtml = completion.choices[0].message.parsed?.html;
+
+  if (newHtml) {
+    await c.env.CACHE_KV.put(inputHashKey, newHtml);
+  }
+
+  return c.text(newHtml ?? "no content in response");
 });
 
 export default app;
