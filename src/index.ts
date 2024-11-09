@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cache } from "hono/cache";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import OpenAI from "openai";
@@ -13,6 +14,14 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 app.use(logger());
 app.use(cors());
+
+app.get(
+  "*",
+  cache({
+    cacheName: "job-posting-red-flags-detector",
+    cacheControl: "public, max-age=3600",
+  })
+);
 
 const HTMLResp = z.object({
   html: z.string().describe("Output HTML"),
