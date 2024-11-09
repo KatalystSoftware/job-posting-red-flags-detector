@@ -33,6 +33,13 @@ You are tasked with identifying things to look out for in a job posting.
 
 You must identify potential red flags and green flags in the job posting. As well as things that may require additional context.
 
+Keep in mind the following aspects when analyzing the job posting:
+- mental health and wellbeing
+- sustainability and work-life balance
+- diversity, equity, and inclusion
+- company culture and values
+- as well as other aspects that may be important for an applicant to consider
+
 You should wrap the highlighted sections in <span> tags with the following attributes:
 - data-highlight boolean value to all
 - data-type any of "positive", "negative", "context" or "info"
