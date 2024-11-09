@@ -39,6 +39,9 @@ Keep in mind the following aspects when analyzing the job posting:
 - diversity, equity, and inclusion
 - company culture and values
 - as well as other aspects that may be important for an applicant to consider
+- companies may glorify or hide certain aspects of the job, so be critical
+- companies may also use certain language to attract or deter certain applicants
+- note on unsubstantiated claims: if a job posting makes a claim that is not backed up by evidence, it may be a red flag
 
 You should wrap the highlighted sections in <span> tags with the following attributes:
 - data-highlight boolean value to all
