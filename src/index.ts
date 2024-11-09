@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { logger } from "hono/logger";
 import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
@@ -10,6 +11,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+app.use(logger());
 app.use(cors());
 
 const HTMLResp = z.object({
